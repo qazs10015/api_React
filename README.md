@@ -6,3 +6,6 @@
 - [ ] 使用 Axios 作為攔截器，並加入 Authenticate Header 與攔截錯誤
 - [ ] 練習 useSWR 的 Cache 功能
 - [ ] 依照環境變數切換 baseURL
+
+
+ref : https://chatgpt.com/share/cc0ca1b2-2c3d-4778-8c3d-902f17173f4a
