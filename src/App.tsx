@@ -1,23 +1,15 @@
-import axios from 'axios';
 import { SWRConfig } from 'swr';
 import './App.css';
 import Users from './pages/Users';
-
-axios.defaults.baseURL = 'https://jsonplaceholder.typicode.com/todos';
-
+import { AxiosInstance } from './api/axios';
 
 //* Fetcher Function
-const fetcher = (url: string) => axios.get(url).then((res) => res.data);
+const fetcher = (url: string) => AxiosInstance.get(url).then((res) => res.data);
 
 function App() {
 
   return (
-    <SWRConfig value={{
-      fetcher,
-      revalidateIfStale: false,
-      revalidateOnFocus: false,
-      revalidateOnReconnect: false
-    }}>
+    <SWRConfig value={{ fetcher }}>
       <Users></Users>
     </SWRConfig>
   )

@@ -2,7 +2,7 @@ import useSWR from 'swr';
 
 function Users() {
     const { data, error } = useSWR("/1");
-    console.log(data);
+    // console.log(data);
     if (error) return <h1>Error!</h1>;
     if (!data) return <h1>Loading...</h1>;
     return (
