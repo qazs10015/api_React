@@ -1,17 +1,28 @@
-import { SWRConfig } from 'swr';
+import useSWR from 'swr';
 import './App.css';
-import Users from './pages/Users';
 import { AxiosInstance } from './api/axios';
 
-//* Fetcher Function
-const fetcher = (url: string) => AxiosInstance.get(url).then((res) => res.data);
 
+const fetcher = (url: string) => AxiosInstance.get(url).then((res) => {
+  console.log('fetcher', res);
+  return res.data
+});
 function App() {
-
+  const { data, isLoading, isValidating, mutate } = useSWR('/comments', fetcher);
+  console.log('isLoading', isLoading);
+  console.log('isValidating', isValidating);
+  console.log('data', data);
   return (
-    <SWRConfig value={{ fetcher }}>
-      <Users></Users>
-    </SWRConfig>
+    <>
+      <h1>SWR Example</h1>
+      <button onClick={() => mutate()}>mutate</button>
+
+      {/* <div>
+        {data.map((item: unknown, idx: number) => (
+          <div key={idx}>{JSON.stringify(item)}</div>
+        ))}
+      </div> */}
+    </>
   )
 }
 
