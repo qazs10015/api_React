@@ -10,32 +10,32 @@ const instance = axios.create({
 });
 
 // /** Request 攔截器 */
-// instance.interceptors.request.use(
-//   function (config) {
-//     // Do something before request is sent
-//     const token = sessionStorage.getItem('token') || '';
-//     if (token) config.headers.Authorization = `Bearer ${token}`;
-//     console.log('request', config);
-//     return config;
-//   },
-//   function (error) {
-//     // Do something with request error
-//     return Promise.reject(error);
-//   }
-// );
+instance.interceptors.request.use(
+  function (config) {
+    // Do something before request is sent
+    const token = sessionStorage.getItem('token') || '';
+    if (token) config.headers.Authorization = `Bearer ${token}`;
+    console.log('request', config);
+    return config;
+  },
+  function (error) {
+    // Do something with request error
+    return Promise.reject(error);
+  }
+);
 
 // /** Response 攔截 */
-// instance.interceptors.response.use(
-//   function (config) {
-//     // Do something before request is sent
-//     console.log('response', config);
-//     return config.data;
-//   },
-//   function (error) {
-//     // Do something with request error
-//     console.log('error', error);
-//     return Promise.reject(error);
-//   }
-// );
+instance.interceptors.response.use(
+  function (config) {
+    // Do something before request is sent
+    console.log('response', config);
+    return config.data;
+  },
+  function (error) {
+    // Do something with request error
+    console.log('error', error);
+    return Promise.reject(error);
+  }
+);
 
 export const AxiosInstance = instance;
