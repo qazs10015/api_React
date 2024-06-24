@@ -67,7 +67,7 @@ ref : https://chatgpt.com/share/cc0ca1b2-2c3d-4778-8c3d-902f17173f4a
    
    兩者的使用方式一模一樣，差異可以看 [source code](https://github.com/bvaughn/react-error-boundary/blob/master/src/ErrorBoundary.ts#L80)
 
-   `fallbackRender` 式直接呼叫傳入的 function，`FallbackComponent` 則是重新建立一個新的 element，不確定哪一種會比較合適，但結果是一樣的
+   `fallbackRender` 是直接呼叫傳入的 function，`FallbackComponent` 則是重新建立一個新的 element，不確定哪一種會比較合適，但結果是一樣的
 
    ![errorBoundaryByPackage](/doc-imgs/errorBoundaryByPackage.png)
 
