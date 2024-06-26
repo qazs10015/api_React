@@ -3,7 +3,7 @@
 ### 預計項目
 
 - [x] 測試呼叫 API
-- [ ] 使用 Axios 作為攔截器，並加入 Authenticate Header 與攔截錯誤
+- [x] 使用 Axios 作為攔截器，並加入 Authenticate Header 與攔截錯誤
 - [ ] 練習 useSWR 的 Cache 功能
 - [ ] 依照環境變數切換 baseURL
 - [ ] 了解 SWR Config
@@ -24,12 +24,37 @@ ref : https://chatgpt.com/share/cc0ca1b2-2c3d-4778-8c3d-902f17173f4a
    useSWR('/api/user', url => fetcher(url))   
    ```
 
+   接下來聊聊 `options`，官網有對此分別做了[說明](https://swr.vercel.app/docs/api)，所以以下先列出我有玩過的東西分別有 `revalidateOnFocus`、`refreshInterval`、`revalidateIfStale`
 
-2. 使用 useSWR 會回傳 `data`、`isLoading`、`isValidating`、`error`、`mutate`。
+   - `revalidateOnFocus` 的效果可以從圖片很清楚的看到，在網頁重新被 focus 的時候就隨觸發
+
+      <video controls src="doc-assets/videos/focus-revalidate.mp4" title="Title"></video>
+
+   - `refreshInterval` 顧名思義就是可以自訂多少時間重新驗證一次
+
+      <video controls src="doc-assets/videos/refetch-interval.mp4" title="Title"></video>
+
+   - `revalidateIfStale` 在官網只有說當資料過期會重新驗證，但資料被 cache 的時間要怎麼調整卻沒有描述
+
+      經筆者測試過後，資料的過期時間可以透過 `dudupingInterval` 做設定，就能測試資料是否過期
+
+      測試方式是建立一個 [jsonserver](https://www.npmjs.com/package/json-server)，然後修改 `db.json`，然後使用每次重新渲染畫面就會重新取得最新資料了
+
+      > 這樣的做法就代表把 `cache` 機制關閉，如果考慮效能問題的話要謹慎使用
+
+      ```ts
+      const { data } = useSWR('/comments', {
+         revalidateOnFocus: false,
+         revalidateIfStale: true,
+         dudupingInterval: 0,
+      });
+      ```
+
+1. 使用 useSWR 會回傳 `data`、`isLoading`、`isValidating`、`error`、`mutate`。
 
    特別介紹 `isLoading`、`isValidating` 這兩個很像，但有些微的不同，`isLoading` 只會在 初次 載入畫面時出發，一旦載入資料完成後，後續不論如何觸發變更資料(ex: `mutate`)，`isLoading` 都不會再次觸發
 
-3. 在瀏覽器在不同的 tab 開啟同樣的網頁時，**每次點擊不同畫面**都會出發資料重新驗證，所以 `isValidating` 會隨著使用著與網頁的互動不斷的更新資料，但也可以透過 `config` 做調整不驗證資料
+2. 在瀏覽器在不同的 tab 開啟同樣的網頁時，**每次點擊不同畫面**都會出發資料重新驗證，所以 `isValidating` 會隨著使用著與網頁的互動不斷的更新資料，但也可以透過 `config` 做調整不驗證資料
 
 
 ## Other Learning Note
@@ -50,7 +75,7 @@ ref : https://chatgpt.com/share/cc0ca1b2-2c3d-4778-8c3d-902f17173f4a
 
 接下來就可以在 render() 處理錯誤發生時要如何渲染畫面，如下圖
 
-![errorBoundaryByCustom](/doc-imgs/errorBoundaryByCustom.png)
+![errorBoundaryByCustom](/doc-assets/images/errorBoundaryByCustom.png)
 
 
 ### 新作法
@@ -69,8 +94,8 @@ ref : https://chatgpt.com/share/cc0ca1b2-2c3d-4778-8c3d-902f17173f4a
 
    `fallbackRender` 是直接呼叫傳入的 function，`FallbackComponent` 則是重新建立一個新的 element，不確定哪一種會比較合適，但結果是一樣的
 
-   ![errorBoundaryByPackage](/doc-imgs/errorBoundaryByPackage.png)
+   ![errorBoundaryByPackage](/doc-assets/images/errorBoundaryByPackage.png)
 
 套件還提供了一個 Hook，`useErrorBoundary`，簡單展示使用方法
 
-![alt text](/doc-imgs/useErrorBoundary.png)
+![alt text](/doc-assets/images/useErrorBoundary.png)
