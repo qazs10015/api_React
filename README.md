@@ -26,9 +26,11 @@ ref : https://chatgpt.com/share/cc0ca1b2-2c3d-4778-8c3d-902f17173f4a
 
    接下來聊聊 `options`，官網有對此分別做了[說明](https://swr.vercel.app/docs/api)，所以以下先列出我有玩過的東西分別有 `revalidateOnFocus`、`refreshInterval`、`revalidateIfStale`
 
-   - `revalidateOnFocus` 的效果可以從圖片很清楚的看到，在網頁重新被 focus 的時候就隨觸發
+   - `revalidateOnFocus` 的效果可以從圖片很清楚的看到，在網頁重新被 focus 的時候就會立刻觸發
 
       <video controls src="doc-assets/videos/focus-revalidate.mp4" title="Title"></video>
+
+   - `focusThrottleInterval` 如果希望 `revalidateOnFocus` 不要觸發的那麼頻繁，可以設定 `revalidateOnFocus` 屬性，效果是在 focus 觸發重新取得資料後開始計算時間，這段時間內都不會再次觸發
 
    - `refreshInterval` 顧名思義就是可以自訂多少時間重新驗證一次
 
@@ -50,11 +52,11 @@ ref : https://chatgpt.com/share/cc0ca1b2-2c3d-4778-8c3d-902f17173f4a
       });
       ```
 
-1. 使用 useSWR 會回傳 `data`、`isLoading`、`isValidating`、`error`、`mutate`。
+2. 使用 useSWR 會回傳 `data`、`isLoading`、`isValidating`、`error`、`mutate`。
 
    特別介紹 `isLoading`、`isValidating` 這兩個很像，但有些微的不同，`isLoading` 只會在 初次 載入畫面時出發，一旦載入資料完成後，後續不論如何觸發變更資料(ex: `mutate`)，`isLoading` 都不會再次觸發
 
-2. 在瀏覽器在不同的 tab 開啟同樣的網頁時，**每次點擊不同畫面**都會出發資料重新驗證，所以 `isValidating` 會隨著使用著與網頁的互動不斷的更新資料，但也可以透過 `config` 做調整不驗證資料
+3. 在瀏覽器在不同的 tab 開啟同樣的網頁時，**每次點擊不同畫面**都會出發資料重新驗證，所以 `isValidating` 會隨著使用著與網頁的互動不斷的更新資料，但也可以透過 `config` 做調整不驗證資料
 
 
 ## Other Learning Note
